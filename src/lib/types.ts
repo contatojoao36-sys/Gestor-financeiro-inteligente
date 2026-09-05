@@ -115,15 +115,24 @@ export interface RecurringTransaction {
   lastGeneratedDate?: string;
 }
 
+/**
+ * Registro fechado de um mês já encerrado: um "extrato" congelado com as métricas daquele
+ * período, que nunca é recalculado depois. É a base histórica que cresce mês a mês para
+ * acompanhar a evolução financeira ao longo do tempo, mesmo que transações antigas sejam
+ * editadas ou removidas mais tarde.
+ */
 export interface FinancialSnapshot {
-  date: string; // ISO date (fim do dia)
-  balance: number;
-  totalIncome: number;
-  totalExpense: number;
-  totalSaved: number;
-  totalInvested: number;
-  totalDebt: number;
-  healthScore: number;
+  month: string; // "YYYY-MM"
+  closedAt: string; // ISO datetime de quando o mês foi fechado
+  income: number;
+  expense: number;
+  saved: number;
+  invested: number;
+  debtPaid: number;
+  net: number; // income - expense - saved - invested - debtPaid
+  balanceEnd: number; // saldo acumulado até o fim deste mês
+  netWorthEnd: number; // patrimônio líquido até o fim deste mês
+  categorySpend: Partial<Record<CategoryKey, number>>;
 }
 
 export type NotificationLevel = "info" | "success" | "warning" | "danger";

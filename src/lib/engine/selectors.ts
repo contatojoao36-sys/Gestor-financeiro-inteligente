@@ -40,6 +40,53 @@ export function getTotalInvested(state: AppState): number {
   );
 }
 
+/** Saldo acumulado considerando apenas transações até (e incluindo) uma data — usado para fechar meses passados. */
+export function getBalanceAsOf(state: AppState, dateIso: string): number {
+  return (
+    state.settings.initialBalance +
+    state.transactions.filter((t) => t.date <= dateIso).reduce((sum, t) => sum + txSign(t) * t.amount, 0)
+  );
+}
+
+export function getTotalSavedAsOf(state: AppState, dateIso: string): number {
+  return state.transactions
+    .filter((t) => t.type === "transfer" && t.date <= dateIso)
+    .reduce((sum, t) => sum + t.amount, 0);
+}
+
+export function getTotalInvestedAsOf(state: AppState, dateIso: string): number {
+  return (
+    state.settings.initialInvested +
+    state.transactions.filter((t) => t.type === "investment" && t.date <= dateIso).reduce((sum, t) => sum + t.amount, 0)
+  );
+}
+
+export function getTotalDebtRemainingAsOf(state: AppState, dateIso: string): number {
+  return state.debts
+    .filter((d) => d.createdAt.slice(0, 10) <= dateIso && (!d.closedAt || d.closedAt > dateIso))
+    .reduce((sum, d) => {
+      const paid = state.transactions
+        .filter((t) => t.type === "debt_payment" && t.debtId === d.id && t.date <= dateIso)
+        .reduce((s, t) => s + t.amount, 0);
+      return sum + Math.max(d.remainingAmount - paid, 0);
+    }, 0);
+}
+
+export function getNetWorthAsOf(state: AppState, dateIso: string): number {
+  return (
+    getBalanceAsOf(state, dateIso) +
+    getTotalSavedAsOf(state, dateIso) +
+    getTotalInvestedAsOf(state, dateIso) -
+    getTotalDebtRemainingAsOf(state, dateIso)
+  );
+}
+
+/** Todos os meses (YYYY-MM) que têm ao menos uma transação registrada, em ordem crescente. */
+export function getAllActivityMonths(state: AppState): string[] {
+  const months = new Set(state.transactions.map((t) => monthKey(t.date)));
+  return Array.from(months).sort();
+}
+
 /** Valor acumulado real de uma meta: base cadastrada + soma de aportes (transferências) vinculados a ela. */
 export function getGoalCurrentAmount(state: AppState, goal: Goal): number {
   const contributed = state.transactions

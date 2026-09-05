@@ -10,7 +10,7 @@ import { useAppStore } from "@/lib/store";
 import { useFinancialData } from "@/lib/hooks/use-financial-data";
 import { getMonthlySeries } from "@/lib/engine/selectors";
 import { analyzeBudget } from "@/lib/engine/budget";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatMonthYear, capitalize } from "@/lib/format";
 import type { AppState } from "@/lib/types";
 
 export default function AnalisesPage() {
@@ -28,6 +28,7 @@ export default function AnalisesPage() {
         <TabsList>
           <TabsTrigger value="orcamento">Orçamento</TabsTrigger>
           <TabsTrigger value="graficos">Gráficos</TabsTrigger>
+          <TabsTrigger value="historico">Histórico</TabsTrigger>
           <TabsTrigger value="inteligencia">Inteligência</TabsTrigger>
         </TabsList>
 
@@ -67,6 +68,44 @@ export default function AnalisesPage() {
               <ProjectionChart data={projection} />
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="historico" className="space-y-3">
+          <p className="text-sm text-muted">
+            Toda vez que um mês termina, seus números ficam registrados permanentemente aqui — mesmo que você edite ou apague transações antigas depois. É a base histórica que cresce mês a mês.
+          </p>
+          {state.snapshots.length === 0 ? (
+            <Card>
+              <CardContent className="py-10 text-center text-sm text-muted">
+                Ainda não há nenhum mês fechado. Assim que o mês atual terminar, ele aparecerá aqui automaticamente.
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="divide-y divide-border overflow-hidden">
+              {[...state.snapshots]
+                .sort((a, b) => (a.month < b.month ? 1 : -1))
+                .map((s) => (
+                  <div key={s.month} className="grid grid-cols-2 gap-2 px-4 py-4 sm:grid-cols-4">
+                    <div className="col-span-2 sm:col-span-1">
+                      <p className="text-sm font-semibold">{capitalize(formatMonthYear(`${s.month}-01`))}</p>
+                      <p className="text-xs text-muted">Fechado</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted">Receita</p>
+                      <p className="text-sm font-medium text-success">{formatCurrency(s.income)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted">Despesa</p>
+                      <p className="text-sm font-medium text-danger">{formatCurrency(s.expense)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted">Líquido do mês</p>
+                      <p className={`text-sm font-medium ${s.net >= 0 ? "text-success" : "text-danger"}`}>{formatCurrency(s.net)}</p>
+                    </div>
+                  </div>
+                ))}
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="inteligencia" className="space-y-4">

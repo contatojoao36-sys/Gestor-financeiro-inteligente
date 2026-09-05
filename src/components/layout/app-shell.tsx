@@ -15,7 +15,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const onboardingComplete = useAppStore((s) => s.settings.onboardingComplete);
   const pinEnabled = useAppStore((s) => s.settings.pinEnabled);
   const pinHash = useAppStore((s) => s.settings.pinHash);
-  const takeSnapshotIfNeeded = useAppStore((s) => s.takeSnapshotIfNeeded);
+  const closeCompletedMonths = useAppStore((s) => s.closeCompletedMonths);
   const [unlocked, setUnlocked] = React.useState(false);
 
   React.useEffect(() => {
@@ -26,9 +26,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     if (hydrated && onboardingComplete) {
-      takeSnapshotIfNeeded();
+      closeCompletedMonths();
     }
-  }, [hydrated, onboardingComplete, takeSnapshotIfNeeded]);
+  }, [hydrated, onboardingComplete, closeCompletedMonths]);
 
   if (!hydrated) {
     return (

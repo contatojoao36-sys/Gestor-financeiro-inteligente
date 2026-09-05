@@ -15,8 +15,7 @@ import { EMPTY_STATE } from "./seed";
 import { genId } from "./id";
 import { profileScopedKey } from "./profiles";
 import { nowISO, todayISO } from "./format";
-import { computeHealthScore } from "./engine/health";
-import { getBalance, getTotalInvested, getTotalSaved, getTotalDebtRemaining } from "./engine/selectors";
+import { computeMonthClose, getMonthsPendingClose } from "./engine/monthly-close";
 
 export interface OnboardingFixedExpense {
   category: CategoryKey;
@@ -88,7 +87,7 @@ interface StoreActions {
   addChatMessage: (message: Omit<ChatMessage, "id" | "createdAt">) => ChatMessage;
   clearChat: () => void;
 
-  takeSnapshotIfNeeded: () => void;
+  closeCompletedMonths: () => void;
   markNotificationsRead: () => void;
 
   resetAllData: () => void;
@@ -256,27 +255,12 @@ export const useAppStore = create<Store>()(
 
       clearChat: () => set({ chatMessages: [] }),
 
-      takeSnapshotIfNeeded: () => {
+      closeCompletedMonths: () => {
         const state = get();
-        const today = todayISO();
-        const already = state.snapshots.some((s) => s.date === today);
-        if (already) return;
-        const health = computeHealthScore(state);
-        set((s) => ({
-          snapshots: [
-            ...s.snapshots,
-            {
-              date: today,
-              balance: getBalance(state),
-              totalIncome: state.transactions.filter((t) => t.type === "income" && t.date === today).reduce((a, t) => a + t.amount, 0),
-              totalExpense: state.transactions.filter((t) => t.type === "expense" && t.date === today).reduce((a, t) => a + t.amount, 0),
-              totalSaved: getTotalSaved(state),
-              totalInvested: getTotalInvested(state),
-              totalDebt: getTotalDebtRemaining(state),
-              healthScore: health.score,
-            },
-          ],
-        }));
+        const pending = getMonthsPendingClose(state);
+        if (pending.length === 0) return;
+        const newSnapshots = pending.map((month) => computeMonthClose(state, month));
+        set((s) => ({ snapshots: [...s.snapshots, ...newSnapshots] }));
       },
 
       markNotificationsRead: () => {
