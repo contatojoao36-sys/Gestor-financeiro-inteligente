@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { PinSetupDialog } from "@/components/pin-setup-dialog";
+import { useActiveProfile } from "@/components/profile-gate";
 import { useAppStore } from "@/lib/store";
 import { CATEGORIES, EXPENSE_CATEGORIES } from "@/lib/categories";
 import type { AppState, CategoryKey } from "@/lib/types";
@@ -26,6 +27,7 @@ export default function ConfiguracoesPage() {
   const resetAllData = useAppStore((s) => s.resetAllData);
   const importState = useAppStore((s) => s.importState);
   const { theme, setTheme } = useTheme();
+  const { profileName, switchProfile } = useActiveProfile();
 
   const [pinDialogOpen, setPinDialogOpen] = React.useState(false);
   const [resetDialogOpen, setResetDialogOpen] = React.useState(false);
@@ -81,7 +83,16 @@ export default function ConfiguracoesPage() {
           <TabsTrigger value="dados">Dados</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="perfil">
+        <TabsContent value="perfil" className="space-y-3">
+          <Card>
+            <CardContent className="flex items-center justify-between py-4">
+              <div>
+                <p className="text-sm font-medium">Perfil ativo: {profileName}</p>
+                <p className="text-xs text-muted">Cada pessoa tem seus próprios dados, isolados neste dispositivo.</p>
+              </div>
+              <Button variant="outline" onClick={switchProfile}>Trocar de perfil</Button>
+            </CardContent>
+          </Card>
           <Card>
             <CardContent className="space-y-4 py-5">
               <div className="space-y-2">

@@ -13,6 +13,7 @@ import type {
 } from "./types";
 import { EMPTY_STATE } from "./seed";
 import { genId } from "./id";
+import { profileScopedKey } from "./profiles";
 import { nowISO, todayISO } from "./format";
 import { computeHealthScore } from "./engine/health";
 import { getBalance, getTotalInvested, getTotalSaved, getTotalDebtRemaining } from "./engine/selectors";
@@ -288,7 +289,13 @@ export const useAppStore = create<Store>()(
     }),
     {
       name: "gfi-storage",
-      storage: createJSONStorage(() => localStorage),
+      // Cada pessoa (perfil) tem seu próprio espaço isolado no localStorage,
+      // resolvido em tempo de leitura/escrita para funcionar com a troca de perfil.
+      storage: createJSONStorage(() => ({
+        getItem: (name) => localStorage.getItem(profileScopedKey(name)),
+        setItem: (name, value) => localStorage.setItem(profileScopedKey(name), value),
+        removeItem: (name) => localStorage.removeItem(profileScopedKey(name)),
+      })),
       skipHydration: true,
       partialize: (state) => {
         const { hydrated: _hydrated, ...rest } = state;
