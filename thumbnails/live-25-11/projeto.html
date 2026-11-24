@@ -1,0 +1,94 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,800;0,900;1,900&family=Anton&display=swap" rel="stylesheet">
+<style>
+:root{--g:#39ff3a;--g2:#1fd12a;--navy:#040b2e;--blue:#0a2a8f;}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--navy)}
+.c{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:Montserrat,sans-serif;
+ background:
+  radial-gradient(900px 700px at 50% 52%, rgba(40,90,255,.55), transparent 70%),
+  radial-gradient(600px 500px at 50% 46%, rgba(57,255,58,.18), transparent 70%),
+  linear-gradient(180deg,#020722 0%,#06134a 40%,#081a63 60%,#020722 100%);}
+svg.bg{position:absolute;inset:0}
+.hex{position:absolute;inset:0;opacity:.13;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97'%3E%3Cpath d='M28 0L56 16v32L28 64 0 48V16zM28 97V64' fill='none' stroke='%2380a8ff' stroke-width='1.2'/%3E%3C/svg%3E");
+ -webkit-mask-image:radial-gradient(70% 45% at 50% 50%, transparent 30%, #000 75%);}
+.logo{position:absolute;left:50%;top:62px;width:760px;transform:translateX(-50%);
+ filter:drop-shadow(0 0 18px rgba(57,255,58,.35)) drop-shadow(0 6px 14px rgba(0,0,0,.6))}
+.badge{position:absolute;top:405px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;
+ background:linear-gradient(180deg,#ff2a3d,#c40018);color:#fff;font-weight:900;font-size:34px;letter-spacing:4px;
+ padding:12px 30px 12px 24px;border-radius:999px;box-shadow:0 0 0 4px rgba(255,255,255,.15),0 0 40px rgba(255,40,60,.7)}
+.badge i{width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.35)}
+.title{position:absolute;top:478px;width:100%;text-align:center;line-height:.9;z-index:1}
+.title .t1{font-family:Anton,sans-serif;font-size:150px;color:#fff;letter-spacing:2px;
+ text-shadow:0 0 30px rgba(80,140,255,.6),0 8px 0 #0a1f73,0 14px 30px rgba(0,0,0,.6)}
+.title .t2{display:inline-block;margin-top:8px;font-weight:900;font-style:italic;font-size:60px;letter-spacing:1px;color:#04102f;
+ background:linear-gradient(180deg,#7dff6a,var(--g2));padding:6px 34px 10px;transform:skewX(-8deg);border-radius:8px;
+ box-shadow:0 0 40px rgba(57,255,58,.6),inset 0 -6px 0 rgba(0,0,0,.18)}
+.people{position:absolute;left:0;right:0;top:770px;height:830px;z-index:2;overflow:hidden}
+.p{position:absolute;bottom:0;
+ filter:drop-shadow(0 0 2px rgba(150,255,140,.9)) drop-shadow(0 0 22px rgba(57,255,58,.45)) drop-shadow(0 20px 30px rgba(0,0,0,.7))}
+.back{-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 97%);filter:brightness(.9) drop-shadow(0 0 2px rgba(150,190,255,.9)) drop-shadow(0 0 24px rgba(60,120,255,.6)) drop-shadow(0 20px 30px rgba(0,0,0,.7))}
+.fade{position:absolute;left:0;right:0;top:1400px;height:260px;z-index:3;
+ background:linear-gradient(180deg,transparent,#020722 70%)}
+.floor{position:absolute;left:50%;top:1545px;width:1200px;height:120px;transform:translateX(-50%);z-index:3;
+ background:radial-gradient(50% 50% at 50% 50%,rgba(57,255,58,.55),transparent 70%);filter:blur(10px)}
+.line{position:absolute;left:60px;right:60px;top:1585px;height:4px;z-index:4;
+ background:linear-gradient(90deg,transparent,var(--g),#fff,var(--g),transparent);box-shadow:0 0 20px var(--g)}
+.date{position:absolute;top:1600px;width:100%;z-index:5;display:flex;justify-content:center;align-items:stretch;gap:0}
+.box{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:6px 36px}
+.box .k{font-weight:800;font-size:28px;letter-spacing:6px;color:var(--g)}
+.box .v{font-family:Anton,sans-serif;font-size:118px;line-height:1;color:#fff;text-shadow:0 0 30px rgba(80,140,255,.7)}
+.sep{width:4px;background:linear-gradient(180deg,transparent,var(--g),transparent);margin:10px 0}
+.cta{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;
+ font-weight:900;font-size:34px;letter-spacing:2px;color:#04102f;background:linear-gradient(180deg,#8dff7a,var(--g2));
+ padding:16px 46px;border-radius:999px;box-shadow:0 0 0 4px rgba(255,255,255,.2),0 0 50px rgba(57,255,58,.6)}
+.spark{position:absolute;border-radius:50%;background:#bfffb5;box-shadow:0 0 12px 4px rgba(57,255,58,.8)}
+</style></head><body>
+<div class="c">
+ <svg class="bg" width="1080" height="1920" id="bg"></svg>
+ <div class="hex"></div>
+ <img class="logo" src="recortes/logo_white.png">
+ <div class="badge"><i></i>AO VIVO</div>
+ <div class="title"><div class="t1">LIVE ESPECIAL</div><div class="t2">MÉTODO HAGUIHARA</div></div>
+ <div class="people">
+  <img class="p back" src="recortes/p2.png" style="height:720px;left:-130px;bottom:120px">
+  <img class="p back" src="recortes/p3.png" style="height:470px;left:395px;bottom:360px">
+  <img class="p" src="recortes/p4.png" style="height:650px;right:-60px;bottom:-70px">
+  <img class="p" src="recortes/p1.png" style="height:690px;left:10px;bottom:-90px">
+ </div>
+ <div class="fade"></div>
+ <div class="floor"></div>
+ <div class="line"></div>
+ <div class="date">
+  <div class="box"><div class="k">QUARTA</div><div class="v">25/11</div></div>
+  <div class="sep"></div>
+  <div class="box"><div class="k">ÀS</div><div class="v">19H</div></div>
+ </div>
+ <div class="cta">🔔 ATIVE O LEMBRETE</div>
+</div>
+<script>
+// DNA helix + light streaks
+const s=document.getElementById('bg'),NS='http://www.w3.org/2000/svg';
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);s.appendChild(e);return e}
+const defs=el('defs',{});defs.innerHTML=`<filter id="gl"><feGaussianBlur stdDeviation="3"/></filter>
+<linearGradient id="st" x1="0" x2="1"><stop offset="0" stop-color="#39ff3a" stop-opacity="0"/><stop offset=".5" stop-color="#39ff3a"/><stop offset="1" stop-color="#39ff3a" stop-opacity="0"/></linearGradient>`;
+function helix(cx,y0,y1,amp,op,rot){
+ const g=el('g',{opacity:op,transform:`rotate(${rot} ${cx} ${(y0+y1)/2})`});
+ let a='',b='';
+ for(let y=y0;y<=y1;y+=6){const t=(y-y0)/60;a+=(y==y0?'M':'L')+(cx+amp*Math.sin(t))+' '+y;b+=(y==y0?'M':'L')+(cx-amp*Math.sin(t))+' '+y}
+ for(let y=y0;y<=y1;y+=22){const t=(y-y0)/60,x1=cx+amp*Math.sin(t),x2=cx-amp*Math.sin(t);
+  const l=document.createElementNS(NS,'line');Object.entries({x1,x2,y1:y,y2:y,stroke:'#8fb4ff','stroke-width':3,'stroke-opacity':.6}).forEach(([k,v])=>l.setAttribute(k,v));g.appendChild(l);
+  [[x1,y],[x2,y]].forEach(([x,yy])=>{const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',yy);c.setAttribute('r',5);c.setAttribute('fill','#cfe0ff');g.appendChild(c)})}
+ [a,b].forEach(d=>{const p=document.createElementNS(NS,'path');p.setAttribute('d',d);p.setAttribute('fill','none');p.setAttribute('stroke','#9cc0ff');p.setAttribute('stroke-width',5);g.appendChild(p)});
+ s.appendChild(g)}
+helix(1000,380,1500,70,.35,12);helix(70,500,1400,55,.22,-10);
+// diagonal light streaks
+[[-100,1300,1200,700,.5],[-200,600,1300,300,.25],[0,1560,1080,1500,.6]].forEach(([x1,y1,x2,y2,o])=>el('line',{x1,y1,x2,y2,stroke:'url(#st)','stroke-width':3,opacity:o,filter:'url(#gl)'}));
+// particles
+const c=document.querySelector('.c');let seed=7;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
+for(let i=0;i<40;i++){const d=document.createElement('div');d.className='spark';const z=2+r()*5;
+ Object.assign(d.style,{left:r()*1080+'px',top:(380+r()*1300)+'px',width:z+'px',height:z+'px',opacity:.3+r()*.7});c.appendChild(d)}
+</script>
+</body></html>
